@@ -1,6 +1,8 @@
 ﻿param (
     [Parameter(Mandatory=$True, Position=1)]
-    [string[]]$Path,
+        [string[]]$Path,
+    [Parameter(Mandatory=$True, Position=2)]
+        [timespan]$Age,
     [switch]$WhatIf
 )
 
@@ -8,10 +10,10 @@ Set-StrictMode -Version Latest
 
 
 
-function Clean([string[]]$Path, [switch]$WhatIf)
+function Clean([string[]]$Path, [timespan]$Age, [switch]$WhatIf)
 {
     # Clear out files
-    $cutoff = (Get-Date) - (New-TimeSpan -Days 30)
+    $cutoff = (Get-Date) - $Age
     $oldFiles = Get-ChildItem -Path $Path -Recurse -Force | Where-Object {-not $_.PSIsContainer -and $_.LastAccessTime -lt $cutoff}
     foreach($item in $oldFiles)
     {
@@ -40,4 +42,4 @@ function CleanEmptyDirectories([string[]]$Path, [switch]$WhatIf)
 
 
 
-Clean -Path $Path -WhatIf:$WhatIf
+Clean -Path $Path -Age $Age -WhatIf:$WhatIf
