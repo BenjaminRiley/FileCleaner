@@ -66,7 +66,7 @@ function CleanEmptyDirectories([string[]]$Path, [switch]$WhatIf)
         }
         else
         {
-            CleanEmptyDirectories($folder.PSPath)
+            CleanEmptyDirectories -Path $folder.PSPath -WhatIf:$WhatIf
         }
     }
 }
