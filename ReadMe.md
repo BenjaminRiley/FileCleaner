@@ -22,7 +22,7 @@ Required. Path(s) to scan for old files.
 ### `-Age <TimeSpan>`
 Amount of time to have passed for a file to be deleted.
 
-This relies on the Last Access Time property of the file.
+A file will be deleted when the Creation Time, Last Write Time, and Last Access Time are all older than the given age.
 
 ### `-WhatIf`
 Shows what would happen if the script runs.

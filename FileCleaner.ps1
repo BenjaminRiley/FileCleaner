@@ -11,7 +11,7 @@ Path(s) to scan for old files.
 
 .PARAMETER Age
 Amount of time to have passed for a file to be deleted.
-This relies on the Last Access Time property of the file.
+A file will be deleted when the Creation Time, Last Write Time, and Last Access Time are all older than the given age.
 
 .PARAMETER WhatIf
 Shows what would happen if the script runs.
@@ -45,7 +45,7 @@ function Clean([string[]]$Path, [timespan]$Age, [switch]$WhatIf)
 {
     # Clear out files
     $cutoff = (Get-Date) - $Age
-    $oldFiles = Get-ChildItem -Path $Path -Recurse -Force | Where-Object {-not $_.PSIsContainer -and $_.LastAccessTime -lt $cutoff}
+    $oldFiles = Get-ChildItem -Path $Path -Recurse -Force | Where-Object {-not $_.PSIsContainer -and $_.CreationTime -lt $cutoff -and $_.LastWriteTime -lt $cutoff -and $_.LastAccessTime -lt $cutoff}
     foreach($item in $oldFiles)
     {
         Remove-Item $item.PSPath -Force -WhatIf:$WhatIf
